@@ -53,9 +53,14 @@ export default class App extends React.Component {
   }
 
   searchSong() {
-    SpotifyWebAPI.search(this.state.input, ["track"]).then(response => {
+    SpotifyWebAPI.search(this.state.input, [
+      "artist",
+      "track",
+      "album",
+      "playlist"
+    ]).then(response => {
+      console.log(response);
       if (response.tracks.items !== 0) {
-        console.log(response);
         const song = response.tracks.items[0];
         const artist = song.artists[0].name;
         const name = song.name;
@@ -71,15 +76,24 @@ export default class App extends React.Component {
     this.setState({ input: e.target.value });
   }
   render() {
+    // Conditional login button
+    let loginButton = !this.state.isLoggedIn ? (
+      <button>
+        <a href="http://localhost:1337">Log into Spotify</a>
+      </button>
+    ) : (
+      <div />
+    );
+
     return (
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-
-          <button>
-            <a href="http://localhost:1337">Log into Spotify</a>
-          </button>
+          {loginButton}
           {/*
+            <button>
+              <a href="http://localhost:1337">Log into Spotify</a>
+            </button>
            */}
           <input
             id="input"
@@ -94,12 +108,18 @@ export default class App extends React.Component {
             Now playing: {this.state.nowPlaying.name} by{" "}
             {this.state.nowPlaying.artist}
           </div>
+          <div>Arist</div>
+          <div>Album</div>
+          <div>Playlist</div>
           <img src={this.state.nowPlaying.image} style={{ width: 300 }} />
+          {/*
+            
+          */}
           <button onClick={this.nowPlaying}>What's playing?</button>
           <iframe
             id="important"
             className="music-player"
-            src={`https://open.spotify.com/embed?uri=spotify:user:${userID}:playlist:${playlistID}`}
+            src={`https://open.spotify.com/embed?uri=spotify:playlist:${playlistID}`}
             width="300"
             height="380"
             frameBorder="0"
