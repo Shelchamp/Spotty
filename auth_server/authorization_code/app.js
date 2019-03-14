@@ -11,6 +11,7 @@
 var ClientID = require("./priv/keys").ClientID;
 var ClientSecret = require("./priv/keys").ClientSecret;
 var RedirectURI = require("./priv/keys").RedirectURI;
+var ClientURI = require("./priv/keys").ClientURI;
 
 var express = require("express"); // Express web server framework
 var request = require("request"); // "Request" library
@@ -57,7 +58,7 @@ app.get("/login", function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = "user-read-private user-read-email";
+  var scope = "user-read-private user-read-email user-read-playback-state";
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
       querystring.stringify({
@@ -120,7 +121,7 @@ app.get("/callback", function(req, res) {
 
         // we can also pass the token to the browser to make requests from there
         res.redirect(
-          "/#" +
+          `${ClientURI}/#` +
             querystring.stringify({
               access_token: access_token,
               refresh_token: refresh_token
