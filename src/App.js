@@ -2,6 +2,8 @@ import React from "react";
 // Components
 import SongIndex from "./components/song_index";
 import AlbumIndex from "./components/album_index";
+import ArtistIndex from "./components/artist_index";
+import PlaylistIndex from "./components/playlist_index";
 
 // Stylesheets
 import "./stylesheets/App.css";
@@ -46,6 +48,7 @@ export default class App extends React.Component {
     this.searchSong = this.searchSong.bind(this);
     this.playSong = this.playSong.bind(this);
     this.playAlbum = this.playAlbum.bind(this);
+    this.playTarget = this.playTarget.bind(this);
   }
 
   componentDidMount() {
@@ -87,6 +90,18 @@ export default class App extends React.Component {
       widgetInfo: {
         id: album.id,
         type: album.type
+      }
+    });
+  }
+
+  playTarget(target) {
+    // DOES THIS WORK FOR ALL RESULTS?
+    // SAME CODE WORKS FOR SONGS, ARTISTS, ALBUMS
+    // STLL NEED TO TEST FOR PLAYLIST
+    this.setState({
+      widgetInfo: {
+        id: target.id,
+        type: target.type
       }
     });
   }
@@ -166,6 +181,20 @@ export default class App extends React.Component {
             Search by song name
           </button>
           <div id="results-container">
+            <PlaylistIndex
+              className="playlists-index"
+              playlists={data.playlists}
+              playPlaylist={this.playTarget}
+            />
+          </div>
+
+          {/*
+            <ArtistIndex
+              className="artists-index"
+              artists={data.artists}
+              playTarget={this.playTarget}
+            />
+            
             <SongIndex
               className="songs-index"
               songs={data.songs}
@@ -176,16 +205,8 @@ export default class App extends React.Component {
               albums={data.albums}
               playAlbum={this.playAlbum}
             />
-          </div>
-
-          {/*
             
             
-            <ArtistIndex 
-              className="artists-index" 
-              artists={data.artists}
-              playAlbum={this.playAlbum}
-            />
 
             <div>
               Now playing: {this.state.nowPlaying.name} by{" "}
@@ -195,7 +216,6 @@ export default class App extends React.Component {
              
               
               <div>Playlists</div>
-              <PlaylistIndex className="playlists-index" playlists={data.playlists} />
             
               <img src={this.state.nowPlaying.image} style={{ width: 300 }} />
               <button onClick={this.nowPlaying}>What's playing?</button>
