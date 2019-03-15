@@ -4,7 +4,6 @@ import { SongIndexItem } from "./song_index_item";
 export default class SongIndex extends React.Component {
   constructor(props) {
     super(props);
-    // Either songs, albums, artists, or playlists will be in down to this as props
   }
 
   render() {
@@ -12,12 +11,7 @@ export default class SongIndex extends React.Component {
       this.props &&
       this.props.songs.map((song, i) => {
         return (
-          <SongIndexItem
-            key={i}
-            song={song}
-            playSong={this.props.playSong}
-            // onClick={e => this.props.playSong(e)}
-          />
+          <SongIndexItem key={i} song={song} playSong={this.props.playSong} />
         );
       });
 

@@ -1,6 +1,7 @@
 import React from "react";
 // Components
 import SongIndex from "./components/song_index";
+import AlbumIndex from "./components/album_index";
 
 // Stylesheets
 import "./stylesheets/App.css";
@@ -81,7 +82,14 @@ export default class App extends React.Component {
     });
   }
 
-  playAlbum() {}
+  playAlbum(album) {
+    this.setState({
+      widgetInfo: {
+        id: album.id,
+        type: album.type
+      }
+    });
+  }
 
   searchSong() {
     SpotifyWebAPI.search(this.state.input, [
@@ -163,20 +171,31 @@ export default class App extends React.Component {
               songs={data.songs}
               playSong={this.playSong}
             />
+            <AlbumIndex
+              className="albums-index"
+              albums={data.albums}
+              playAlbum={this.playAlbum}
+            />
           </div>
 
           {/*
-            <div>Songs</div>
+            
+            
+            <ArtistIndex 
+              className="artists-index" 
+              artists={data.artists}
+              playAlbum={this.playAlbum}
+            />
+
             <div>
               Now playing: {this.state.nowPlaying.name} by{" "}
               {this.state.nowPlaying.artist}
             </div>
               <div>Artists</div>
-              <ArtistIndex className="artists-index" artists={data.artists} />
-              <div>Albums</div>
-              <Index className="albums-index" albums={data.albums} />
+             
+              
               <div>Playlists</div>
-              <Index className="playlists-index" playlists={data.playlists} />
+              <PlaylistIndex className="playlists-index" playlists={data.playlists} />
             
               <img src={this.state.nowPlaying.image} style={{ width: 300 }} />
               <button onClick={this.nowPlaying}>What's playing?</button>
