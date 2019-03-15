@@ -13,7 +13,10 @@ import "./stylesheets/index_item.css";
 // Useful variables and functions
 import { SpotURI } from "./helpers/spotify_uri";
 import { playlistID } from "./priv/keys";
-import { getHashParams } from "./helpers/get_hash_params"; // Function that gets tokens from query string
+import { getHashParams } from "./helpers/get_hash_params"; // Gets tokens from query string
+
+// React logo
+import logo from "./logo.svg";
 
 // Access Spotify
 import Spotify from "spotify-web-api-js";
@@ -44,7 +47,6 @@ export default class App extends React.Component {
     };
 
     this.setInput = this.setInput.bind(this);
-    this.nowPlaying = this.nowPlaying.bind(this);
     this.searchSong = this.searchSong.bind(this);
     this.playTarget = this.playTarget.bind(this);
   }
@@ -60,18 +62,9 @@ export default class App extends React.Component {
     });
   }
 
-  nowPlaying() {
-    SpotifyWebAPI.getMyCurrentPlaybackState().then(response => {
-      if (response) {
-        this.setState({
-          nowPlaying: {
-            artist: response.item.artists[0].name,
-            name: response.item.name,
-            image: response.item.album.images[0].url
-          }
-        });
-      }
-    });
+  // For search bar
+  setInput(e) {
+    this.setState({ input: e.target.value });
   }
 
   playTarget(target) {
@@ -113,10 +106,6 @@ export default class App extends React.Component {
         }
       });
     });
-  }
-
-  setInput(e) {
-    this.setState({ input: e.target.value });
   }
 
   render() {
@@ -178,11 +167,11 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
           {loginButton}
           {/*
-          <img src={logo} className="App-logo" alt="logo" />
             
-           */}
+          */}
           <input
             id="input"
             onChange={this.setInput}
@@ -192,8 +181,9 @@ export default class App extends React.Component {
           <button id="search" onClick={this.searchSong}>
             Search by song name
           </button>
-          <ResultTabs tabs={tabs} />
-          <div id="results-container" />
+          <div id="results-container">
+            <ResultTabs tabs={tabs} />
+          </div>
 
           {/*
             
@@ -224,11 +214,8 @@ export default class App extends React.Component {
               Now playing: {this.state.nowPlaying.name} by{" "}
               {this.state.nowPlaying.artist}
             </div>
-              <div>Artists</div>
-             
               
-              <div>Playlists</div>
-            
+      
               <img src={this.state.nowPlaying.image} style={{ width: 300 }} />
               <button onClick={this.nowPlaying}>What's playing?</button>
           */}
