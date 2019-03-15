@@ -1,13 +1,13 @@
 import React from "react";
 // Components
-import Index from "./components/index";
+import SongIndex from "./components/song_index";
 
 import "./stylesheets/App.css";
 import Spotify from "spotify-web-api-js";
 import { SpotURI } from "./helpers/spotify_uri";
 import { getHashParams } from "./helpers/get_hash_params"; // Function that gets tokens from query string
 
-import { userID, playlistID } from "./priv/keys";
+import { playlistID } from "./priv/keys";
 const SpotifyWebAPI = new Spotify();
 
 export default class App extends React.Component {
@@ -130,24 +130,24 @@ export default class App extends React.Component {
             Now playing: {this.state.nowPlaying.name} by{" "}
             {this.state.nowPlaying.artist}
           </div>
-          <div>Songs</div>
-          <div>
-            <Index className="songs-index" songs={data.songs} />
-            <div>Artists</div>
-            <Index className="artists-index" artists={data.artists} />
-            <div>Albums</div>
-            <Index className="albums-index" albums={data.albums} />
-            <div>Playlists</div>
-            <Index className="playlists-index" playlists={data.playlists} />
+          <div id="results-container">
+            <div>Songs</div>
+            <SongIndex className="songs-index" songs={data.songs} />
           </div>
 
-          <img src={this.state.nowPlaying.image} style={{ width: 300 }} />
           {/*
+              <div>Artists</div>
+              <Index className="artists-index" artists={data.artists} />
+              <div>Albums</div>
+              <Index className="albums-index" albums={data.albums} />
+              <div>Playlists</div>
+              <Index className="playlists-index" playlists={data.playlists} />
             
           */}
+          <img src={this.state.nowPlaying.image} style={{ width: 300 }} />
           <button onClick={this.nowPlaying}>What's playing?</button>
           <iframe
-            id="important"
+            id="player-widget"
             className="music-player"
             src={`${SpotURI}spotify:playlist:${playlistID}`}
             width="300"
