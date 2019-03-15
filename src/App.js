@@ -1,5 +1,6 @@
 import React from "react";
 // Components
+import ResultTabs from "./components/tabs/result_tabs";
 import SongIndex from "./components/indexes/song_index";
 import AlbumIndex from "./components/indexes/album_index";
 import ArtistIndex from "./components/indexes/artist_index";
@@ -30,7 +31,6 @@ export default class App extends React.Component {
     this.state = {
       input: "",
       isLoggedIn: params.access_token ? true : false,
-      nowPlaying: { artist: "", name: "", image: "" },
       data: {
         artists: [],
         songs: [],
@@ -46,8 +46,6 @@ export default class App extends React.Component {
     this.setInput = this.setInput.bind(this);
     this.nowPlaying = this.nowPlaying.bind(this);
     this.searchSong = this.searchSong.bind(this);
-    this.playSong = this.playSong.bind(this);
-    this.playAlbum = this.playAlbum.bind(this);
     this.playTarget = this.playTarget.bind(this);
   }
 
@@ -76,28 +74,8 @@ export default class App extends React.Component {
     });
   }
 
-  playSong(song) {
-    this.setState({
-      widgetInfo: {
-        id: song.id,
-        type: song.type
-      }
-    });
-  }
-
-  playAlbum(album) {
-    this.setState({
-      widgetInfo: {
-        id: album.id,
-        type: album.type
-      }
-    });
-  }
-
   playTarget(target) {
-    // DOES THIS WORK FOR ALL RESULTS?
-    // SAME CODE WORKS FOR SONGS, ARTISTS, ALBUMS
-    // STLL NEED TO TEST FOR PLAYLIST
+    // SAME CODE WORKS FOR SONGS, ARTISTS, ALBUMS, AND PLAYLISTS
     this.setState({
       widgetInfo: {
         id: target.id,
@@ -118,15 +96,6 @@ export default class App extends React.Component {
       const albums = response.albums.items;
       const artists = response.artists.items;
       const playlists = response.playlists.items;
-      // if (response.tracks.items !== 0) {
-      //   const song = response.tracks.items[0];
-      //   const artist = song.artists[0].name;
-      //   const name = song.name;
-      //   const image = song.album.images[0].url;
-      //   this.setState({
-      //     nowPlaying: { artist: artist, name: name, image: image }
-      //   });
-      // }
 
       this.setState({
         data: {
@@ -163,6 +132,49 @@ export default class App extends React.Component {
     // Extract data from state
     const data = this.state.data;
 
+    const tabs = [
+      {
+        title: "Songs",
+        results: (
+          <SongIndex
+            className="songs-index"
+            songs={data.songs}
+            playSong={this.playTarget}
+          />
+        )
+      },
+      {
+        title: "Albums",
+        results: (
+          <AlbumIndex
+            className="albums-index"
+            albums={data.albums}
+            playAlbum={this.playTarget}
+          />
+        )
+      },
+      {
+        title: "Artists",
+        results: (
+          <ArtistIndex
+            className="artists-index"
+            artists={data.artists}
+            playArtist={this.playTarget}
+          />
+        )
+      },
+      {
+        title: "Playlists",
+        results: (
+          <PlaylistIndex
+            className="playlists-index"
+            playlists={data.playlists}
+            playPlaylist={this.playTarget}
+          />
+        )
+      }
+    ];
+
     return (
       <div className="App">
         <header className="App-header">
@@ -180,13 +192,17 @@ export default class App extends React.Component {
           <button id="search" onClick={this.searchSong}>
             Search by song name
           </button>
-          <div id="results-container">
+          <ResultTabs tabs={tabs} />
+          <div id="results-container" />
+
+          {/*
+            
             <ArtistIndex
               className="artists-index"
               artists={data.artists}
               playArtist={this.playTarget}
             />
-
+  
             <SongIndex
               className="songs-index"
               songs={data.songs}
@@ -202,12 +218,8 @@ export default class App extends React.Component {
               playlists={data.playlists}
               playPlaylist={this.playTarget}
             />
-          </div>
-
-          {/*
             
             
-
             <div>
               Now playing: {this.state.nowPlaying.name} by{" "}
               {this.state.nowPlaying.artist}

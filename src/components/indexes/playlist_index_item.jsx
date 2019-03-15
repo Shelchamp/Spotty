@@ -6,7 +6,7 @@ export const PlaylistIndexItem = props => {
       className="index-item"
       onClick={() => props.playPlaylist(props.playlist)}
     >
-      {props.playlist.owner.display_name} - {props.playlist.name}
+      {props.playlist.name} - {props.playlist.owner.display_name}
     </li>
   );
 };
