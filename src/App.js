@@ -1,7 +1,10 @@
 import React from "react";
-import logo from "./logo.svg";
+// Components
+import Index from "./components/index";
+
 import "./stylesheets/App.css";
 import Spotify from "spotify-web-api-js";
+import { SpotURI } from "./helpers/spotify_uri";
 import { getHashParams } from "./helpers/get_hash_params"; // Function that gets tokens from query string
 
 import { userID, playlistID } from "./priv/keys";
@@ -19,7 +22,13 @@ export default class App extends React.Component {
     this.state = {
       input: "",
       isLoggedIn: params.access_token ? true : false,
-      nowPlaying: { artist: "", name: "", image: "" }
+      nowPlaying: { artist: "", name: "", image: "" },
+      data: {
+        artists: [],
+        songs: [],
+        albums: [],
+        playlists: []
+      }
     };
 
     this.setInput = this.setInput.bind(this);
@@ -60,6 +69,10 @@ export default class App extends React.Component {
       "playlist"
     ]).then(response => {
       console.log(response);
+      const songs = response.tracks.items;
+      const albums = response.albums.items;
+      const artists = response.artists.items;
+      const playlists = response.playlists.items;
       if (response.tracks.items !== 0) {
         const song = response.tracks.items[0];
         const artist = song.artists[0].name;
@@ -69,6 +82,15 @@ export default class App extends React.Component {
           nowPlaying: { artist: artist, name: name, image: image }
         });
       }
+
+      this.setState({
+        data: {
+          songs: songs,
+          albums: albums,
+          artists: artists,
+          playlists: playlists
+        }
+      });
     });
   }
 
@@ -85,15 +107,15 @@ export default class App extends React.Component {
       <div />
     );
 
+    const data = this.state.data;
+
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           {loginButton}
           {/*
-            <button>
-              <a href="http://localhost:1337">Log into Spotify</a>
-            </button>
+          <img src={logo} className="App-logo" alt="logo" />
+            
            */}
           <input
             id="input"
@@ -108,9 +130,17 @@ export default class App extends React.Component {
             Now playing: {this.state.nowPlaying.name} by{" "}
             {this.state.nowPlaying.artist}
           </div>
-          <div>Arist</div>
-          <div>Album</div>
-          <div>Playlist</div>
+          <div>Songs</div>
+          <div>
+            <Index className="songs-index" songs={data.songs} />
+            <div>Artists</div>
+            <Index className="artists-index" artists={data.artists} />
+            <div>Albums</div>
+            <Index className="albums-index" albums={data.albums} />
+            <div>Playlists</div>
+            <Index className="playlists-index" playlists={data.playlists} />
+          </div>
+
           <img src={this.state.nowPlaying.image} style={{ width: 300 }} />
           {/*
             
@@ -119,7 +149,7 @@ export default class App extends React.Component {
           <iframe
             id="important"
             className="music-player"
-            src={`https://open.spotify.com/embed?uri=spotify:playlist:${playlistID}`}
+            src={`${SpotURI}spotify:playlist:${playlistID}`}
             width="300"
             height="380"
             frameBorder="0"
