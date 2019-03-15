@@ -1,9 +1,9 @@
 import React from "react";
 // Components
-import SongIndex from "./components/song_index";
-import AlbumIndex from "./components/album_index";
-import ArtistIndex from "./components/artist_index";
-import PlaylistIndex from "./components/playlist_index";
+import SongIndex from "./components/indexes/song_index";
+import AlbumIndex from "./components/indexes/album_index";
+import ArtistIndex from "./components/indexes/artist_index";
+import PlaylistIndex from "./components/indexes/playlist_index";
 
 // Stylesheets
 import "./stylesheets/App.css";
@@ -181,6 +181,22 @@ export default class App extends React.Component {
             Search by song name
           </button>
           <div id="results-container">
+            <ArtistIndex
+              className="artists-index"
+              artists={data.artists}
+              playArtist={this.playTarget}
+            />
+
+            <SongIndex
+              className="songs-index"
+              songs={data.songs}
+              playSong={this.playTarget}
+            />
+            <AlbumIndex
+              className="albums-index"
+              albums={data.albums}
+              playAlbum={this.playTarget}
+            />
             <PlaylistIndex
               className="playlists-index"
               playlists={data.playlists}
@@ -189,22 +205,6 @@ export default class App extends React.Component {
           </div>
 
           {/*
-            <ArtistIndex
-              className="artists-index"
-              artists={data.artists}
-              playTarget={this.playTarget}
-            />
-            
-            <SongIndex
-              className="songs-index"
-              songs={data.songs}
-              playSong={this.playSong}
-            />
-            <AlbumIndex
-              className="albums-index"
-              albums={data.albums}
-              playAlbum={this.playAlbum}
-            />
             
             
 

@@ -14,7 +14,7 @@ export default class ArtistIndex extends React.Component {
           <ArtistIndexItem
             key={i}
             artist={artist}
-            playTarget={this.props.playTarget}
+            playArtist={this.props.playArtist}
           />
         );
       });
