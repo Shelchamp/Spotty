@@ -11,7 +11,14 @@ export default class SongIndex extends React.Component {
     const songs =
       this.props &&
       this.props.songs.map((song, i) => {
-        return <SongIndexItem key={i} song={song} />;
+        return (
+          <SongIndexItem
+            key={i}
+            song={song}
+            playSong={this.props.playSong}
+            // onClick={e => this.props.playSong(e)}
+          />
+        );
       });
 
     return (

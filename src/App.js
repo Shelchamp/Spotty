@@ -2,12 +2,17 @@ import React from "react";
 // Components
 import SongIndex from "./components/song_index";
 
+// Stylesheets
 import "./stylesheets/App.css";
-import Spotify from "spotify-web-api-js";
+import "./stylesheets/index_item.css";
+
+// Useful variables and functions
 import { SpotURI } from "./helpers/spotify_uri";
+import { playlistID } from "./priv/keys";
 import { getHashParams } from "./helpers/get_hash_params"; // Function that gets tokens from query string
 
-import { playlistID } from "./priv/keys";
+// Access Spotify
+import Spotify from "spotify-web-api-js";
 const SpotifyWebAPI = new Spotify();
 
 export default class App extends React.Component {
@@ -28,12 +33,18 @@ export default class App extends React.Component {
         songs: [],
         albums: [],
         playlists: []
+      },
+      widgetInfo: {
+        type: "playlist",
+        id: playlistID
       }
     };
 
     this.setInput = this.setInput.bind(this);
     this.nowPlaying = this.nowPlaying.bind(this);
     this.searchSong = this.searchSong.bind(this);
+    this.playSong = this.playSong.bind(this);
+    this.playAlbum = this.playAlbum.bind(this);
   }
 
   componentDidMount() {
@@ -61,6 +72,17 @@ export default class App extends React.Component {
     });
   }
 
+  playSong(song) {
+    this.setState({
+      widgetInfo: {
+        id: song.id,
+        type: song.type
+      }
+    });
+  }
+
+  playAlbum() {}
+
   searchSong() {
     SpotifyWebAPI.search(this.state.input, [
       "artist",
@@ -73,15 +95,15 @@ export default class App extends React.Component {
       const albums = response.albums.items;
       const artists = response.artists.items;
       const playlists = response.playlists.items;
-      if (response.tracks.items !== 0) {
-        const song = response.tracks.items[0];
-        const artist = song.artists[0].name;
-        const name = song.name;
-        const image = song.album.images[0].url;
-        this.setState({
-          nowPlaying: { artist: artist, name: name, image: image }
-        });
-      }
+      // if (response.tracks.items !== 0) {
+      //   const song = response.tracks.items[0];
+      //   const artist = song.artists[0].name;
+      //   const name = song.name;
+      //   const image = song.album.images[0].url;
+      //   this.setState({
+      //     nowPlaying: { artist: artist, name: name, image: image }
+      //   });
+      // }
 
       this.setState({
         data: {
@@ -91,14 +113,22 @@ export default class App extends React.Component {
           playlists: playlists
         }
       });
+
+      this.setState({
+        widgetInfo: {
+          type: songs[0].type,
+          id: songs[0].id
+        }
+      });
     });
   }
 
   setInput(e) {
     this.setState({ input: e.target.value });
   }
+
   render() {
-    // Conditional login button
+    // Conditional render login button
     let loginButton = !this.state.isLoggedIn ? (
       <button>
         <a href="http://localhost:1337">Log into Spotify</a>
@@ -107,6 +137,7 @@ export default class App extends React.Component {
       <div />
     );
 
+    // Extract data from state
     const data = this.state.data;
 
     return (
@@ -126,30 +157,36 @@ export default class App extends React.Component {
           <button id="search" onClick={this.searchSong}>
             Search by song name
           </button>
-          <div>
-            Now playing: {this.state.nowPlaying.name} by{" "}
-            {this.state.nowPlaying.artist}
-          </div>
           <div id="results-container">
-            <div>Songs</div>
-            <SongIndex className="songs-index" songs={data.songs} />
+            <SongIndex
+              className="songs-index"
+              songs={data.songs}
+              playSong={this.playSong}
+            />
           </div>
 
           {/*
+            <div>Songs</div>
+            <div>
+              Now playing: {this.state.nowPlaying.name} by{" "}
+              {this.state.nowPlaying.artist}
+            </div>
               <div>Artists</div>
-              <Index className="artists-index" artists={data.artists} />
+              <ArtistIndex className="artists-index" artists={data.artists} />
               <div>Albums</div>
               <Index className="albums-index" albums={data.albums} />
               <div>Playlists</div>
               <Index className="playlists-index" playlists={data.playlists} />
             
+              <img src={this.state.nowPlaying.image} style={{ width: 300 }} />
+              <button onClick={this.nowPlaying}>What's playing?</button>
           */}
-          <img src={this.state.nowPlaying.image} style={{ width: 300 }} />
-          <button onClick={this.nowPlaying}>What's playing?</button>
           <iframe
             id="player-widget"
             className="music-player"
-            src={`${SpotURI}spotify:playlist:${playlistID}`}
+            src={`${SpotURI}spotify:${this.state.widgetInfo.type}:${
+              this.state.widgetInfo.id
+            }`}
             width="300"
             height="380"
             frameBorder="0"
