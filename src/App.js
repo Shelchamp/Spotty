@@ -12,7 +12,8 @@ import "./stylesheets/index_item.css";
 
 // Useful variables and functions
 import { SpotURI } from "./helpers/spotify_uri";
-import { playlistID } from "./priv/keys";
+// import { playlistID } from "./priv/keys";
+
 import { getHashParams } from "./helpers/get_hash_params"; // Gets tokens from query string
 // React logo
 import logo from "./logo.svg";
@@ -20,6 +21,8 @@ import logo from "./logo.svg";
 // Access Spotify
 import Spotify from "spotify-web-api-js";
 const SpotifyWebAPI = new Spotify();
+
+const playlistID = process.env.playlistID || "37i9dQZF1DXcO7NnEyD2nd";
 
 export default class App extends React.Component {
   constructor(props) {
