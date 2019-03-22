@@ -114,7 +114,9 @@ export default class App extends React.Component {
     // Conditional render login button
     let loginButton = !this.state.isLoggedIn ? (
       <button>
-        <a href="http://localhost:1337/login">Log into Spotify</a>
+        <a href="https://spotty-server-side.herokuapp.com/login">
+          Log into Spotify
+        </a>
       </button>
     ) : (
       <div />
