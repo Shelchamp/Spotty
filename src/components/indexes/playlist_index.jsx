@@ -2,9 +2,9 @@ import React from "react";
 import { PlaylistIndexItem } from "./playlist_index_item";
 
 export default class PlaylistIndex extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     const playlists =

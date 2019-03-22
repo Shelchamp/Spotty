@@ -11,3 +11,8 @@ node app.js
 # NOTES
 
 Song and Album index & items are the same
+
+# FOR DEPLOYMENT
+
+ClientURI = FRONTEND_URI
+RedirectURI = callback uri

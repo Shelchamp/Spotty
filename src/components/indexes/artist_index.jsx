@@ -2,9 +2,9 @@ import React from "react";
 import { ArtistIndexItem } from "./artist_index_item";
 
 export default class ArtistIndex extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     const artists =

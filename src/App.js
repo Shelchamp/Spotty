@@ -14,7 +14,6 @@ import "./stylesheets/index_item.css";
 import { SpotURI } from "./helpers/spotify_uri";
 import { playlistID } from "./priv/keys";
 import { getHashParams } from "./helpers/get_hash_params"; // Gets tokens from query string
-
 // React logo
 import logo from "./logo.svg";
 

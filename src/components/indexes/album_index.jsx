@@ -2,9 +2,9 @@ import React from "react";
 import { AlbumIndexItem } from "./album_index_item";
 
 export default class AlbumIndex extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
   render() {
     const albums =
       this.props &&
