@@ -14,7 +14,7 @@ import "./stylesheets/index_item.css";
 import { SpotURI } from "./helpers/spotify_uri";
 // import { playlistID } from "./priv/keys";
 
-import { getHashParams } from "./helpers/get_hash_params"; // Gets tokens from query string
+import { getQueryParams } from "./helpers/get_query_params"; // Gets tokens from query string
 // React logo
 import logo from "./logo.svg";
 
@@ -27,7 +27,7 @@ const playlistID = process.env.playlistID || "37i9dQZF1DXcO7NnEyD2nd";
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    const params = getHashParams();
+    const params = getQueryParams();
 
     if (params.access_token) {
       SpotifyWebAPI.setAccessToken(params.access_token);
@@ -114,7 +114,7 @@ export default class App extends React.Component {
     // Conditional render login button
     let loginButton = !this.state.isLoggedIn ? (
       <button>
-        <a href="http://localhost:1337">Log into Spotify</a>
+        <a href="http://localhost:1337/login">Log into Spotify</a>
       </button>
     ) : (
       <div />
