@@ -101,12 +101,12 @@ export default class App extends React.Component {
         }
       });
 
-      this.setState({
-        widgetInfo: {
-          type: songs[0].type,
-          id: songs[0].id
-        }
-      });
+      // this.setState({
+      //   widgetInfo: {
+      //     type: songs[0].type,
+      //     id: songs[0].id
+      //   }
+      // });
     });
   }
 
@@ -114,7 +114,10 @@ export default class App extends React.Component {
     // Conditional render login button
     let loginButton = !this.state.isLoggedIn ? (
       <button>
+        <a href="http://localhost:1337/login">
+          {/*
         <a href="https://spotty-server-side.herokuapp.com/login">
+        */}
           Log into Spotify
         </a>
       </button>
