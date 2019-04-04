@@ -1,9 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import App from "./App";
+
+// Stylesheets
 import "./stylesheets/index.css";
 import "./stylesheets/reset.css";
-import App from "./App";
-// import Spot from "./components/Spot";
+import "./stylesheets/App.css";
+import "./stylesheets/index_item.css";
+import "./stylesheets/tab.css"
+
 import * as serviceWorker from "./serviceWorker";
 
 document.addEventListener("DOMContentLoaded", () => {

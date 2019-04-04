@@ -6,10 +6,6 @@ import AlbumIndex from "./components/indexes/album_index";
 import ArtistIndex from "./components/indexes/artist_index";
 import PlaylistIndex from "./components/indexes/playlist_index";
 
-// Stylesheets
-import "./stylesheets/App.css";
-import "./stylesheets/index_item.css";
-
 // Useful variables and functions
 import { SpotURI } from "./helpers/spotify_uri";
 // import { playlistID } from "./priv/keys";
